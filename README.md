@@ -6,11 +6,10 @@ This module creates one or more autorecovery instances.
 
 ```HCL
 module "ar" {
-  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-ec2_autorecovery//?ref=v0.12.6"
+  source = "git@github.com:rackspace-infrastructure-automation/aws-terraform-ec2_autorecovery//?ref=v0.12.10"
 
   ec2_os              = "amazon"
   subnets             = module.vpc.private_subnets
-  image_id            = var.image_id
   name                = "my_ar_instance"
   security_groups = [module.sg.private_web_security_group_id]
 }
@@ -75,7 +74,10 @@ New variable `ssm_bootstrap_list` was added to allow setting the SSM association
 | eip\_allocation\_id\_list | A list of Allocation IDs of the EIPs you want to associate with the instance(s). This is one per instance. e.g. if you specify 2 for instance\_count then you must supply two allocation ids  here. | `list(string)` | `[]` | no |
 | enable\_ebs\_optimization | Use EBS Optimized? true or false | `bool` | `false` | no |
 | enable\_recovery\_alarms | Boolean parameter controlling if auto-recovery alarms should be created.  Recovery actions are not supported on all instance types and AMIs, especially those with ephemeral storage.  This parameter should be set to false for those cases. | `bool` | `true` | no |
-| encrypt\_secondary\_ebs\_volume | Encrypt EBS Volume? true or false | `bool` | `false` | no |
+| encrypt\_primary\_ebs\_volume | Encrypt root EBS Volume? true or false | `bool` | `false` | no |
+| encrypt\_primary\_ebs\_volume\_kms\_id | If `encrypt_primary_ebs_volume` is `true` you can optionally provide a KMS CMK ARN. | `string` | `""` | no |
+| encrypt\_secondary\_ebs\_volume | Encrypt secondary EBS Volume? true or false | `bool` | `false` | no |
+| encrypt\_secondary\_ebs\_volume\_kms\_id | If `encrypt_secondary_ebs_volume` is `true` you can optionally provide a KMS CMK ARN. | `string` | `""` | no |
 | environment | Application environment for which this network is being created. Preferred value are Development, Integration, PreProduction, Production, QA, Staging, or Test | `string` | `"Development"` | no |
 | final\_userdata\_commands | Commands to be given at the end of userdata for an instance. This should generally not include bootstrapping or ssm install. | `string` | `""` | no |
 | image\_id | The AMI ID to be used to build the EC2 Instance. If not provided, an AMI ID will be queried with an OS specified in variable ec2\_os. | `string` | `""` | no |
@@ -119,6 +121,7 @@ New variable `ssm_bootstrap_list` was added to allow setting the SSM association
 | Name | Description |
 |------|-------------|
 | ar\_image\_id | Image ID used for EC2 provisioning |
+| ar\_instance\_az\_list | List of resulting Instance availability zones |
 | ar\_instance\_id\_list | List of resulting Instance IDs |
 | ar\_instance\_ip\_list | List of resulting Instance IP addresses |
 | ar\_instance\_r53\_name\_list | List of resulting Route 53 internal records |
