@@ -348,3 +348,9 @@ variable "initial_userdata_commands" {
   type        = string
   default     = ""
 }
+
+variable "service_provider" {
+  description = "Service Provider Name"
+  type        = string
+  default     = "undefined"
+}

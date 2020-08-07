@@ -225,7 +225,7 @@ locals {
 
   tags = {
     Environment     = var.environment
-    ServiceProvider = "Rackspace"
+    ServiceProvider = var.service_provider
   }
 
   # local.tags_ec2 is applied to the autorecovery instance
@@ -233,7 +233,7 @@ locals {
   tags_ec2 = {
     Backup           = var.backup_tag_value
     "Patch Group"    = var.ssm_patching_group
-    ServiceProvider  = "Rackspace"
+    ServiceProvider  = var.service_provider
     SSMInventory     = var.perform_ssm_inventory_tag
     "SSM Target Tag" = "Target-${var.name}"
   }
